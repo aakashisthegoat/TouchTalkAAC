@@ -57,7 +57,7 @@ I started this project in February 2026 as a way to apply what I learned in my h
 The app was developed over several weeks and tested with a user who has cerebral palsy. Their feedback helped improve button sizing, category organization, and overall usability.
 
 ## Future Plans
-
+This app is still in the developmental phase. I intend on making this a downloadable app for both android and ios soon and implement user profiles through sign up/ sign in process.
 Possible additions based on continued user testing:
 - AI-powered word prediction
 - Multiple user profiles
@@ -66,7 +66,7 @@ Possible additions based on continued user testing:
 
 ## Usage
 
-To use the app, simply open `index.html` in a web browser. For the best experience on an iPad or tablet, visit the live version at [your-github-pages-link].
+To use the app, simply open `index.html` in a web browser. For the best experience on an iPad or tablet, visit the live version at https://aakashisthegoat.github.io/TouchTalkAAC/
 
 The app works entirely in the browser and doesn't require any installation or account creation.
 
