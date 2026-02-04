@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TouchTalk AAC</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>TouchTalk</h1>
+        
+        <!-- EMERGENCY BUTTON -->
+        <button class="emergency-btn" onclick="emergency()">
+            🆘 HELP - I NEED ASSISTANCE 🆘
+        </button>
+        
+        <!-- Output Display -->
+        <div class="output-box" id="output">
+            Tap symbols to communicate
+        </div>
+        
+        <!-- Back Button (hidden by default) -->
+        <button class="back-btn" id="backBtn" onclick="showCategories()" style="display: none;">
+            ← Back to Categories
+        </button>
+        
+        <!-- Symbol Grid (will change based on category) -->
+        <div class="symbol-grid" id="symbolGrid">
+            <!-- Categories shown by default -->
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="action-btn speak-btn" onclick="speakText()">
+                🔊 Speak
+            </button>
+            <button class="action-btn clear-btn" onclick="clearText()">
+                🗑️ Clear
+            </button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
