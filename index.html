@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TouchTalk">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#2563EB">
+  <meta name="description" content="TouchTalk — Free AAC communication app for everyone">
+  <title>TouchTalk AAC</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="view-home">
+
+  <!-- ============ HEADER ============ -->
+  <header class="app-header" role="banner">
+    <div class="app-brand">
+      <svg class="brand-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="currentColor" opacity="0.15"/>
+        <path d="M6 10C6 8.895 6.895 8 8 8h16c1.105 0 2 .895 2 2v9c0 1.105-.895 2-2 2H18l-4 3v-3H8c-1.105 0-2-.895-2-2V10z" fill="currentColor"/>
+      </svg>
+      <span class="app-title">TouchTalk</span>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="searchToggle" aria-label="Search words" title="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+      <button class="icon-btn" id="darkModeToggle" aria-label="Toggle dark mode" title="Dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ SEARCH BAR ============ -->
+  <div class="search-bar-wrap" id="searchBarWrap" aria-hidden="true">
+    <div class="search-bar">
+      <svg class="search-icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" id="searchInput" class="search-input" placeholder="Search all words and phrases…" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search words">
+      <button class="search-clear-btn" id="searchClearBtn" aria-label="Clear search" tabindex="-1">✕</button>
+    </div>
+  </div>
+
+  <!-- ============ MAIN (scrollable) ============ -->
+  <main class="app-main" id="appMain">
+
+    <!-- ===== HOME / TALK VIEW ===== -->
+    <section class="view view-panel" id="view-home" aria-label="Talk">
+
+      <!-- search results (only shown while searching) -->
+      <div class="search-results-area" id="searchResultsArea" aria-live="polite" aria-label="Search results" style="display:none"></div>
+
+      <div id="talkContent">
+        <!-- category nav tabs -->
+        <nav class="cat-nav" id="catNav" role="navigation" aria-label="Word categories" style="display:none">
+          <div class="cat-nav-scroll"></div>
+        </nav>
+        <!-- symbol / category grid -->
+        <div class="symbol-grid" id="symbolGrid" role="grid" aria-label="Communication symbols"></div>
+      </div>
+    </section>
+
+    <!-- ===== TYPE VIEW (text-based AAC) ===== -->
+    <section class="view view-panel" id="view-type" aria-label="Type to speak" hidden>
+      <div class="view-header">
+        <h1 class="view-title">Type to Speak</h1>
+        <p class="view-sub">Type anything and TouchTalk will say it out loud.</p>
+      </div>
+      <label for="typeArea" class="sr-only">Text to speak</label>
+      <textarea id="typeArea" class="type-area" rows="4" placeholder="Type here…" autocomplete="off" autocorrect="on"></textarea>
+      <div class="predict-row type-predict" id="typePredict" role="group" aria-label="Word suggestions"></div>
+      <div class="type-controls">
+        <button class="type-btn type-clear" onclick="typeClear()" aria-label="Clear typed text">🗑️ Clear</button>
+        <button class="type-btn type-save" onclick="typeSaveAsPhrase()" aria-label="Save as quick phrase">⭐ Save Phrase</button>
+        <button class="type-btn type-speak" onclick="typeSpeak()" aria-label="Speak typed text">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+          Speak
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== WORD BANKS VIEW ===== -->
+    <section class="view view-panel" id="view-wordbanks" aria-label="Word Banks" hidden>
+      <div class="view-header">
+        <h1 class="view-title">Word Banks</h1>
+        <p class="view-sub">Add and manage your categories, symbols, and phrases.</p>
+      </div>
+      <div class="manage-grid">
+        <button class="manage-card" onclick="openAddCategoryModal()">
+          <span class="manage-emoji" aria-hidden="true">📁</span>
+          <span class="manage-label">Add Category</span>
+          <span class="manage-desc">Create a new group of words</span>
+        </button>
+        <button class="manage-card" onclick="openAddSymbolModal()">
+          <span class="manage-emoji" aria-hidden="true">➕</span>
+          <span class="manage-label">Add Symbol</span>
+          <span class="manage-desc">Add a word to a category</span>
+        </button>
+        <button class="manage-card" onclick="openAddPhraseModal()">
+          <span class="manage-emoji" aria-hidden="true">⭐</span>
+          <span class="manage-label">Add Quick Phrase</span>
+          <span class="manage-desc">Save a full sentence</span>
+        </button>
+        <button class="manage-card" onclick="openDeleteCategoryModal()">
+          <span class="manage-emoji" aria-hidden="true">🗑️</span>
+          <span class="manage-label">Delete Category</span>
+          <span class="manage-desc">Remove a category you made</span>
+        </button>
+        <button class="manage-card" onclick="openDeleteSymbolModal()">
+          <span class="manage-emoji" aria-hidden="true">❌</span>
+          <span class="manage-label">Delete Symbol</span>
+          <span class="manage-desc">Remove individual words</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== HISTORY VIEW ===== -->
+    <section class="view view-panel" id="view-history" aria-label="History" hidden>
+      <div class="view-header">
+        <h1 class="view-title">History</h1>
+        <p class="view-sub">Tap any past sentence to speak it again.</p>
+      </div>
+      <div id="historyList" class="history-list" aria-live="polite"></div>
+    </section>
+
+    <!-- ===== SETTINGS VIEW ===== -->
+    <section class="view view-panel" id="view-settings" aria-label="Settings" hidden>
+      <div class="view-header">
+        <h1 class="view-title">Settings</h1>
+        <p class="view-sub">Customize the voice and appearance.</p>
+      </div>
+
+      <div class="settings-card">
+        <div class="settings-row">
+          <span class="settings-label" id="darkLabel">Dark Mode</span>
+          <button class="toggle-switch" id="darkToggle" role="switch" aria-checked="false" aria-labelledby="darkLabel" onclick="toggleDarkMode()">
+            <span class="toggle-knob"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h2 class="settings-card-title">Voice</h2>
+        <div class="settings-field">
+          <label class="settings-label" for="voiceSelect">Voice</label>
+          <select class="settings-select" id="voiceSelect" aria-label="Select voice"></select>
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="voiceSpeed">Speed — <span id="speedVal">0.85×</span></label>
+          <input type="range" class="settings-slider" id="voiceSpeed" min="0.5" max="2.0" step="0.05" value="0.85">
+          <div class="slider-ends" aria-hidden="true"><span>Slow</span><span>Fast</span></div>
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="voicePitch">Pitch — <span id="pitchVal">1.00×</span></label>
+          <input type="range" class="settings-slider" id="voicePitch" min="0.5" max="2.0" step="0.05" value="1.0">
+          <div class="slider-ends" aria-hidden="true"><span>Low</span><span>High</span></div>
+        </div>
+        <button class="settings-action-btn" onclick="testVoice()">🔊 Test Voice</button>
+      </div>
+
+      <div class="settings-card">
+        <h2 class="settings-card-title">Access</h2>
+        <div class="settings-row">
+          <span class="settings-label" id="speakWordLabel">Speak each word when tapped</span>
+          <button class="toggle-switch" id="speakWordToggle" role="switch" aria-checked="true" aria-labelledby="speakWordLabel" onclick="toggleSpeakEachWord()">
+            <span class="toggle-knob"></span>
+          </button>
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="buttonSize">Button size</label>
+          <select class="settings-select" id="buttonSize">
+            <option value="small">Small — more words on screen</option>
+            <option value="medium" selected>Medium (default)</option>
+            <option value="large">Large — easier to tap</option>
+            <option value="xl">Extra Large — limited mobility</option>
+          </select>
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="holdDuration">Hold to activate (prevents accidental taps)</label>
+          <select class="settings-select" id="holdDuration">
+            <option value="0" selected>Off — tap normally</option>
+            <option value="300">Short hold (0.3s)</option>
+            <option value="600">Medium hold (0.6s)</option>
+            <option value="1000">Long hold (1s)</option>
+          </select>
+        </div>
+        <div class="settings-field">
+          <label class="settings-label" for="debounceTime">Pause between taps (prevents double taps)</label>
+          <select class="settings-select" id="debounceTime">
+            <option value="0" selected>Off</option>
+            <option value="300">Short (0.3s)</option>
+            <option value="700">Medium (0.7s)</option>
+            <option value="1500">Long (1.5s)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h2 class="settings-card-title">Backup</h2>
+        <p class="settings-hint">Save all your words, phrases and settings to a file — restore them on any device.</p>
+        <button class="settings-action-btn" onclick="exportBackup()">💾 Export Backup</button>
+        <button class="settings-action-btn" style="margin-top:10px" onclick="document.getElementById('importFile').click()">📂 Import Backup</button>
+        <input type="file" id="importFile" accept=".json,application/json" style="display:none" aria-label="Import backup file">
+      </div>
+
+      <div class="settings-card">
+        <h2 class="settings-card-title">Install</h2>
+        <p class="settings-hint" id="installHint">Install TouchTalk on this device to use it full-screen and offline, like a normal app.</p>
+        <button class="settings-action-btn" id="installBtn" onclick="installApp()">📲 Install App</button>
+      </div>
+
+      <div class="settings-card settings-info">
+        <p>TouchTalk v2.3 · Free &amp; open · No data collected</p>
+        <a href="landing.html" class="settings-link">About TouchTalk →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ SPEAK ACTION BAR (home only) ============ -->
+  <div class="action-bar" id="actionBar" role="region" aria-label="Sentence and speak controls">
+    <div class="predict-row" id="predictRow" role="group" aria-label="Word suggestions"></div>
+    <div class="output-box" id="output" role="log" aria-label="Current sentence" aria-live="polite" tabindex="0">
+      <span class="output-placeholder" id="outputPlaceholder">Tap symbols to build a sentence</span>
+    </div>
+    <div class="action-row">
+      <button class="act-btn emergency-btn" onclick="emergency()" aria-label="Emergency — I need help now">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <span class="act-label">Help</span>
+      </button>
+      <button class="act-btn util-btn" onclick="backspaceWord()" aria-label="Delete last word">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/>
+        </svg>
+        <span class="act-label">Back</span>
+      </button>
+      <button class="act-btn util-btn" onclick="clearText()" aria-label="Clear all text">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/>
+        </svg>
+        <span class="act-label">Clear</span>
+      </button>
+      <button class="act-btn speak-btn" onclick="speakText()" aria-label="Speak the sentence aloud">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>
+        <span class="act-label">Speak</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ BOTTOM NAV (always visible) ============ -->
+  <nav class="bottom-nav" id="bottomNav" role="navigation" aria-label="Main navigation">
+    <button class="nav-tab active" data-view="home" aria-current="page" aria-label="Home — talk">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9.5L12 3l9 6.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M9 21v-6h6v6"/>
+      </svg>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-tab" data-view="type" aria-label="Type to speak">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="9" x2="6" y2="9.01"/><line x1="10" y1="9" x2="10" y2="9.01"/><line x1="14" y1="9" x2="14" y2="9.01"/><line x1="18" y1="9" x2="18" y2="9.01"/><line x1="6" y1="13" x2="6" y2="13.01"/><line x1="18" y1="13" x2="18" y2="13.01"/><line x1="8" y1="16" x2="16" y2="16"/>
+      </svg>
+      <span class="nav-label">Type</span>
+    </button>
+    <button class="nav-tab" data-view="wordbanks" aria-label="Word Banks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+      </svg>
+      <span class="nav-label">Banks</span>
+    </button>
+    <button class="nav-tab" data-view="history" aria-label="History">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/>
+      </svg>
+      <span class="nav-label">History</span>
+    </button>
+    <button class="nav-tab" data-view="settings" aria-label="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      <span class="nav-label">Settings</span>
+    </button>
+  </nav>
+
+  <!-- ============ MODAL ============ -->
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Title</h2>
+        <button class="modal-close" id="modalClose" aria-label="Close dialog">✕</button>
+      </header>
+      <div class="modal-body" id="modalBody"></div>
+      <footer class="modal-footer" id="modalFooter"></footer>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

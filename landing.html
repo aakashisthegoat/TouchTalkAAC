@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TouchTalk is a free AAC app that gives a voice to people with cerebral palsy, ALS, autism, aphasia, and other speech disabilities.">
+  <title>TouchTalk — Free AAC App for Everyone</title>
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --speak: #059669;
+      --text-1: #1E293B;
+      --text-2: #64748B;
+      --bg: #F8FAFF;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      line-height: 1.6;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .nav-brand span { font-size: 28px; }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { font-size: 15px; font-weight: 600; color: var(--text-2); transition: color 0.15s; }
+    .nav-links a:hover { color: var(--primary); text-decoration: none; }
+    .nav-cta {
+      background: var(--primary);
+      color: #fff !important;
+      padding: 9px 20px;
+      border-radius: 100px;
+      transition: background 0.15s, transform 0.15s !important;
+    }
+    .nav-cta:hover { background: var(--primary-dark) !important; transform: translateY(-1px); text-decoration: none !important; }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(160deg, #EEF2FF 0%, #F0FDF4 100%);
+      padding: 80px 24px 72px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #DBEAFE;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 7vw, 68px);
+      font-weight: 900;
+      line-height: 1.07;
+      letter-spacing: -1.5px;
+      color: var(--text-1);
+      max-width: 760px;
+      margin: 0 auto 20px;
+    }
+    .hero h1 em { font-style: normal; color: var(--primary); }
+    .hero p {
+      font-size: clamp(17px, 2.5vw, 22px);
+      color: var(--text-2);
+      max-width: 580px;
+      margin: 0 auto 40px;
+      line-height: 1.55;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 14px;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px rgba(37,99,235,.35);
+      text-decoration: none;
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,.45); text-decoration: none; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      color: var(--text-1);
+      font-size: 17px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      transition: border-color 0.15s, transform 0.15s;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); text-decoration: none; }
+    .hero-disclaimer {
+      font-size: 13px;
+      color: var(--text-2);
+    }
+
+    /* WHAT IS AAC */
+    .what-is {
+      padding: 72px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .section-tag {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      color: var(--text-1);
+      margin-bottom: 20px;
+    }
+    .section-body {
+      font-size: 18px;
+      color: var(--text-2);
+      max-width: 660px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* WHO */
+    .who-section {
+      background: var(--surface);
+      padding: 72px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .who-section .section-title { text-align: center; }
+    .conditions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 40px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .condition-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .condition-icon { font-size: 36px; margin-bottom: 8px; }
+    .condition-name { font-size: 15px; font-weight: 700; color: var(--text-1); }
+    .condition-desc { font-size: 13px; color: var(--text-2); margin-top: 4px; line-height: 1.4; }
+
+    /* FEATURES */
+    .features-section { padding: 80px 24px; max-width: 1000px; margin: 0 auto; }
+    .features-section .section-title { text-align: center; margin-bottom: 48px; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .feature-title { font-size: 18px; font-weight: 800; color: var(--text-1); margin-bottom: 8px; }
+    .feature-desc { font-size: 15px; color: var(--text-2); line-height: 1.55; }
+
+    /* HOW TO INSTALL */
+    .install-section {
+      background: linear-gradient(160deg, #0F172A 0%, #1E3A5F 100%);
+      color: #fff;
+      padding: 80px 24px;
+    }
+    .install-section .section-title { color: #fff; text-align: center; }
+    .install-section .section-tag { color: #60A5FA; }
+    .install-tabs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 32px 0 24px;
+      flex-wrap: wrap;
+    }
+    .install-tab {
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,.2);
+      background: transparent;
+      color: rgba(255,255,255,.7);
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .install-tab.active, .install-tab:hover {
+      background: rgba(255,255,255,.15);
+      border-color: rgba(255,255,255,.5);
+      color: #fff;
+    }
+    .install-steps {
+      max-width: 600px;
+      margin: 0 auto;
+      display: none;
+    }
+    .install-steps.active { display: block; }
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content h4 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+    .step-content p { font-size: 15px; color: rgba(255,255,255,.7); line-height: 1.5; }
+    .step-content code {
+      background: rgba(255,255,255,.12);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #93C5FD;
+    }
+
+    /* FAQ */
+    .faq-section { padding: 80px 24px; max-width: 760px; margin: 0 auto; }
+    .faq-section .section-title { text-align: center; margin-bottom: 40px; }
+    .faq-item {
+      border-bottom: 1.5px solid var(--border);
+      padding: 20px 0;
+    }
+    .faq-q {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-1);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+      line-height: 1.4;
+    }
+    .faq-q::after { content: '+'; font-size: 22px; font-weight: 400; color: var(--text-2); flex-shrink: 0; }
+    .faq-item.open .faq-q::after { content: '−'; }
+    .faq-a {
+      font-size: 16px;
+      color: var(--text-2);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.2s;
+      line-height: 1.65;
+    }
+    .faq-item.open .faq-a { max-height: 400px; padding-top: 12px; }
+
+    /* DOWNLOAD */
+    .download-section {
+      background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+      color: #fff;
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .download-section h2 {
+      font-size: clamp(30px, 6vw, 52px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    .download-section p {
+      font-size: 18px;
+      opacity: 0.85;
+      max-width: 500px;
+      margin: 0 auto 36px;
+    }
+    .download-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.15);
+      border: 2px solid rgba(255,255,255,.4);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+      backdrop-filter: blur(8px);
+    }
+    .dl-btn:hover {
+      background: rgba(255,255,255,.25);
+      border-color: rgba(255,255,255,.7);
+      transform: translateY(-2px);
+      text-decoration: none;
+      color: #fff;
+    }
+    .dl-btn-icon { font-size: 24px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--text-1);
+      color: rgba(255,255,255,.6);
+      padding: 40px 24px;
+      text-align: center;
+    }
+    footer a { color: rgba(255,255,255,.8); }
+    footer a:hover { color: #fff; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+    .footer-links a { font-size: 14px; font-weight: 600; }
+    .footer-disclaimer {
+      font-size: 12px;
+      opacity: 0.5;
+      max-width: 600px;
+      margin: 16px auto 0;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#"><span>💬</span> TouchTalk</a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#install">Install</a>
+    <a href="#faq">FAQ</a>
+    <a href="index.html" class="nav-cta">Open App →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✨ 100% Free · No Ads · No Data Collected</div>
+  <h1>Give everyone a <em>voice</em> — for free.</h1>
+  <p>TouchTalk is an Augmentative and Alternative Communication (AAC) app that helps people with speech disabilities communicate instantly using symbols, phrases, and text-to-speech.</p>
+  <div class="hero-buttons">
+    <a href="index.html" class="btn-primary">🚀 Open TouchTalk Now</a>
+    <a href="#install" class="btn-secondary">📱 Install on Phone</a>
+  </div>
+  <p class="hero-disclaimer">Works in any browser · No account needed · Free forever</p>
+</section>
+
+<!-- WHAT IS AAC -->
+<section class="what-is">
+  <p class="section-tag">What is AAC?</p>
+  <h2 class="section-title">Communication is a human right</h2>
+  <p class="section-body">
+    Augmentative and Alternative Communication (AAC) tools help people who cannot speak — or have difficulty speaking — to express themselves. TouchTalk replaces expensive dedicated AAC devices with a free app that works on any phone, tablet, or computer. Tap a symbol, build a sentence, press Speak. It's that simple.
+  </p>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="who-section">
+  <p class="section-tag" style="text-align:center">Who it's for</p>
+  <h2 class="section-title">Built for people, not diagnoses</h2>
+  <div class="conditions-grid">
+    <div class="condition-card">
+      <div class="condition-icon">🧠</div>
+      <div class="condition-name">Cerebral Palsy</div>
+      <div class="condition-desc">Large buttons and one-tap speaking for limited motor control</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">⚡</div>
+      <div class="condition-name">ALS / MND</div>
+      <div class="condition-desc">Works with switch access and eye-tracking devices</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">🌈</div>
+      <div class="condition-name">Autism</div>
+      <div class="condition-desc">Predictable layout with customisable word banks</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">🗣️</div>
+      <div class="condition-name">Aphasia</div>
+      <div class="condition-desc">Symbol-first design bypasses language retrieval barriers</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">🤫</div>
+      <div class="condition-name">Selective Mutism</div>
+      <div class="condition-desc">Communicate in stressful situations without speaking</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">🏥</div>
+      <div class="condition-name">Post-Surgery / Intubation</div>
+      <div class="condition-desc">Temporary communication when speaking is not possible</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <p class="section-tag" style="text-align:center">Features</p>
+  <h2 class="section-title">Everything you need, nothing you don't</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🔊</span>
+      <h3 class="feature-title">Text-to-Speech</h3>
+      <p class="feature-desc">Tap any symbol and it speaks immediately. Or build a full sentence and speak it all at once. Adjustable speed, pitch, and voice.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⭐</span>
+      <h3 class="feature-title">Quick Phrases</h3>
+      <p class="feature-desc">Common sentences like "I need help" or "I want water" are always one tap away. Add your own phrases for personalised communication.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔍</span>
+      <h3 class="feature-title">Caregiver Search</h3>
+      <p class="feature-desc">Caregivers and support workers can type to search all word banks instantly — no need to know the symbol layout.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🆘</span>
+      <h3 class="feature-title">Emergency Button</h3>
+      <p class="feature-desc">One large, always-visible button immediately speaks "Help, I need assistance now" at full volume.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">✏️</span>
+      <h3 class="feature-title">Custom Word Banks</h3>
+      <p class="feature-desc">Add your own categories, symbols, and phrases. Upload photos or use any emoji. Changes are saved offline to your device.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🌙</span>
+      <h3 class="feature-title">Dark Mode</h3>
+      <p class="feature-desc">Easy on the eyes for long sessions. Full dark mode with high-contrast text across the entire app.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📶</span>
+      <h3 class="feature-title">Fully Offline</h3>
+      <p class="feature-desc">Works without internet once installed. No server calls, no tracking, nothing leaves your device.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">♿</span>
+      <h3 class="feature-title">Accessibility First</h3>
+      <p class="feature-desc">WCAG AA contrast, 56dp+ touch targets, screen reader support, and no flashing animations. Built for everyone.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💸</span>
+      <h3 class="feature-title">Free Forever</h3>
+      <p class="feature-desc">No subscription. No in-app purchases. No ads. No account. TouchTalk is free because communication shouldn't have a paywall.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO INSTALL -->
+<section class="install-section" id="install">
+  <p class="section-tag" style="text-align:center">Installation</p>
+  <h2 class="section-title" style="color:#fff">Install on your device</h2>
+  <div class="install-tabs">
+    <button class="install-tab active" onclick="showInstall('web', this)">🌐 Web (Any Device)</button>
+    <button class="install-tab" onclick="showInstall('ios', this)">🍎 iPhone / iPad</button>
+    <button class="install-tab" onclick="showInstall('android', this)">🤖 Android</button>
+  </div>
+
+  <div class="install-steps active" id="install-web">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Open TouchTalk</h4><p>Visit this page on any device and tap <strong>Open TouchTalk Now</strong> above.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Use it immediately</h4><p>No download or account needed. The app works instantly in your browser.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Bookmark for quick access</h4><p>Bookmark the app page in your browser so you can return to it quickly.</p></div></div>
+  </div>
+
+  <div class="install-steps" id="install-ios">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Open in Safari</h4><p>Open TouchTalk in <strong>Safari</strong> on your iPhone or iPad (not Chrome).</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Tap the Share button</h4><p>Tap the <strong>□↑</strong> Share icon at the bottom of the screen.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Add to Home Screen</h4><p>Scroll down and tap <strong>"Add to Home Screen"</strong>. Tap <strong>Add</strong>.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Done!</h4><p>TouchTalk appears on your home screen like any other app and works fully offline.</p></div></div>
+  </div>
+
+  <div class="install-steps" id="install-android">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Open in Chrome</h4><p>Open TouchTalk in <strong>Google Chrome</strong> on your Android phone or tablet.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Tap the menu</h4><p>Tap the <strong>⋮</strong> three-dot menu in the top-right corner of Chrome.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Add to Home screen</h4><p>Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong> and confirm.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Done!</h4><p>TouchTalk is now installed on your Android device and works without internet.</p></div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <p class="section-tag" style="text-align:center">FAQ</p>
+  <h2 class="section-title">Common questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Does TouchTalk collect any data about me or the user?</div>
+    <div class="faq-a">No. TouchTalk collects absolutely zero data. There are no analytics, no tracking pixels, no server calls. Everything — your word banks, settings, and custom phrases — is stored only on your device using the browser's local storage. Nothing ever leaves the device.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Does it work without internet?</div>
+    <div class="faq-a">Yes. Once you've visited the app once, it installs a service worker that caches the entire app. After that, TouchTalk works completely offline — including text-to-speech, which uses your device's built-in speech engine, not the internet.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">What languages are supported?</div>
+    <div class="faq-a">Text-to-speech supports every language your device supports (typically 30–60 languages on iOS and Android). The app interface is currently in English. You can add words and phrases in any language — the TTS engine will attempt to speak them correctly.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Is this a medical device?</div>
+    <div class="faq-a">No. TouchTalk is a communication aid, not a medical device. It has not been certified by the FDA, CE, or any other regulatory body. It is not a replacement for professional AAC assessment or therapy. For complex communication needs, please consult a speech-language pathologist.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Can I add my own words and pictures?</div>
+    <div class="faq-a">Yes. Open the app, go to Customize, and you can add new categories, symbols with custom photos or emojis, and quick phrases. Everything is saved to your device and persists between sessions.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Does it work with switch access or eye-tracking?</div>
+    <div class="faq-a">TouchTalk is designed with accessibility in mind. All interactive elements are keyboard-focusable, which makes it compatible with most switch access systems. Full eye-tracking support is on the roadmap for a future version.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Why is it free?</div>
+    <div class="faq-a">Communication is a human right. Dedicated AAC devices can cost thousands of dollars, putting them out of reach for many families. TouchTalk exists to change that. It is maintained as a free, open project with no commercial interests.</div>
+  </div>
+</section>
+
+<!-- DOWNLOAD CTA -->
+<section class="download-section" id="download">
+  <h2>Ready to start communicating?</h2>
+  <p>Open TouchTalk right now — no download, no account, no cost.</p>
+  <div class="download-buttons">
+    <a href="index.html" class="dl-btn"><span class="dl-btn-icon">🚀</span> Open the App</a>
+    <a href="#install" class="dl-btn"><span class="dl-btn-icon">📱</span> Install to Home Screen</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Open App</a>
+    <a href="#features">Features</a>
+    <a href="#faq">FAQ</a>
+    <a href="mailto:abza2030@gmail.com">Contact</a>
+  </div>
+  <p style="font-size:14px; margin-bottom:8px">Made with ❤️ for the AAC community</p>
+  <p class="footer-disclaimer">
+    ⚠️ Not a medical device. TouchTalk is a free communication support tool, not a substitute for professional medical advice, diagnosis, or treatment. For clinical AAC needs, consult a qualified speech-language pathologist.
+  </p>
+</footer>
+
+<script>
+  function showInstall(id, tab) {
+    document.querySelectorAll('.install-steps').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.install-tab').forEach(el => el.classList.remove('active'));
+    document.getElementById('install-' + id).classList.add('active');
+    tab.classList.add('active');
+  }
+  function toggleFaq(el) {
+    el.closest('.faq-item').classList.toggle('open');
+  }
+</script>
+</body>
+</html>
