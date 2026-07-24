@@ -365,30 +365,59 @@ function toggleSpeakEachWord() {
  * Keyboard activation (e.detail === 0) always works regardless of hold setting.
  */
 function bindActivate(btn, fn) {
-  let downAt = 0, heldMs = 0;
-  btn.addEventListener('pointerdown', () => {
-    downAt = Date.now();
-    if (accessSettings.holdMs > 0) btn.classList.add('holding');
-  });
-  btn.addEventListener('pointerup', () => {
-    heldMs = downAt ? Date.now() - downAt : 0;
-    downAt = 0;
-    btn.classList.remove('holding');
-  });
-  // Only invalidate if the pointer leaves while still pressed (drag-off);
-  // on touch, pointerleave fires after pointerup, when downAt is already 0.
-  const abandon = () => {
-    if (downAt) { downAt = 0; heldMs = 0; }
-    btn.classList.remove('holding');
-  };
-  btn.addEventListener('pointercancel', abandon);
-  btn.addEventListener('pointerleave', abandon);
-  btn.addEventListener('click', e => {
-    if (accessSettings.holdMs > 0 && e.detail > 0 && heldMs < accessSettings.holdMs) return; // released too early
+  let holdTimer = null;
+  let didHoldActivate = false;
+  let isDown = false;
+
+  const trigger = () => {
     const now = Date.now();
-    if (now < activationLockUntil) return; // debounce window
+    if (now < activationLockUntil) return;
     activationLockUntil = now + accessSettings.debounceMs;
     fn();
+  };
+
+  btn.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    isDown = true;
+    didHoldActivate = false;
+
+    if (accessSettings.holdMs > 0) {
+      btn.classList.add('holding');
+      holdTimer = setTimeout(() => {
+        if (isDown) {
+          didHoldActivate = true;
+          btn.classList.remove('holding');
+          trigger();
+        }
+      }, accessSettings.holdMs);
+    }
+  });
+
+  const abandon = () => {
+    isDown = false;
+    if (holdTimer) clearTimeout(holdTimer);
+    btn.classList.remove('holding');
+  };
+
+  btn.addEventListener('pointerup', () => {
+    if (isDown) {
+      isDown = false;
+      if (holdTimer) clearTimeout(holdTimer);
+      btn.classList.remove('holding');
+    }
+  });
+
+  btn.addEventListener('pointercancel', abandon);
+  btn.addEventListener('pointerleave', abandon);
+
+  btn.addEventListener('contextmenu', e => {
+    if (accessSettings.holdMs > 0) e.preventDefault();
+  });
+
+  btn.addEventListener('click', e => {
+    if (didHoldActivate) return; 
+    if (accessSettings.holdMs > 0 && e.detail > 0) return; 
+    trigger();
   });
 }
 

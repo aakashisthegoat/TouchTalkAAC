@@ -4,7 +4,7 @@
   "description": "Free AAC communication app for people with speech disabilities",
   "id": "/",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/app.html",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#F0F4FF",

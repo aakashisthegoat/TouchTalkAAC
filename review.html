@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TouchTalk — Leave a Review</title>
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --text-1: #1E293B;
+      --text-2: #64748B;
+      --bg: #F8FAFF;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav {
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      width: 90%;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+    p {
+      color: var(--text-2);
+      margin-bottom: 30px;
+    }
+
+    /* FORM */
+    .form-group {
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .rating-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .rating-group label {
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--bg);
+    }
+    .rating-group input[type="radio"]:checked + span {
+      font-weight: bold;
+      color: var(--primary);
+    }
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 120px;
+    }
+    button[type="submit"] {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+    button[type="submit"]:hover {
+      background: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html"><span>💬</span> TouchTalk</a>
+  <a href="app.html" style="font-weight:600; background:var(--primary); color:#fff; padding:6px 16px; border-radius:100px; text-decoration:none;">Open App →</a>
+</nav>
+
+<div class="container">
+  <h1>Leave a Review 🌟</h1>
+  <p>We'd love to hear your feedback on TouchTalk. Your review helps us improve the app for everyone.</p>
+
+  <form name="review" method="POST" data-netlify="true" action="index.html">
+    <div class="form-group">
+      <label>Rating (out of 5)</label>
+      <div class="rating-group">
+        <label><input type="radio" name="rating" value="1" required> <span>1 ⭐️</span></label>
+        <label><input type="radio" name="rating" value="2"> <span>2 ⭐️⭐️</span></label>
+        <label><input type="radio" name="rating" value="3"> <span>3 ⭐️⭐️⭐️</span></label>
+        <label><input type="radio" name="rating" value="4"> <span>4 ⭐️⭐️⭐️⭐️</span></label>
+        <label><input type="radio" name="rating" value="5"> <span>5 ⭐️⭐️⭐️⭐️⭐️</span></label>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="feedback">Your Feedback</label>
+      <textarea id="feedback" name="feedback" placeholder="Tell us what you like or what could be better..." required></textarea>
+    </div>
+
+    <button type="submit">Submit Review</button>
+  </form>
+</div>
+
+</body>
+</html>

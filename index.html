@@ -2,316 +2,626 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="TouchTalk">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#2563EB">
-  <meta name="description" content="TouchTalk — Free AAC communication app for everyone">
-  <title>TouchTalk AAC</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TouchTalk is a free AAC app that gives a voice to people with cerebral palsy, ALS, autism, aphasia, and other speech disabilities.">
+  <title>TouchTalk — Free AAC App for Everyone</title>
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --speak: #059669;
+      --text-1: #1E293B;
+      --text-2: #64748B;
+      --bg: #F8FAFF;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      line-height: 1.6;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .nav-brand span { font-size: 28px; }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { font-size: 15px; font-weight: 600; color: var(--text-2); transition: color 0.15s; }
+    .nav-links a:hover { color: var(--primary); text-decoration: none; }
+    .nav-cta {
+      background: var(--primary);
+      color: #fff !important;
+      padding: 9px 20px;
+      border-radius: 100px;
+      transition: background 0.15s, transform 0.15s !important;
+    }
+    .nav-cta:hover { background: var(--primary-dark) !important; transform: translateY(-1px); text-decoration: none !important; }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(160deg, #EEF2FF 0%, #F0FDF4 100%);
+      padding: 80px 24px 72px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #DBEAFE;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 7vw, 68px);
+      font-weight: 900;
+      line-height: 1.07;
+      letter-spacing: -1.5px;
+      color: var(--text-1);
+      max-width: 760px;
+      margin: 0 auto 20px;
+    }
+    .hero h1 em { font-style: normal; color: var(--primary); }
+    .hero p {
+      font-size: clamp(17px, 2.5vw, 22px);
+      color: var(--text-2);
+      max-width: 580px;
+      margin: 0 auto 40px;
+      line-height: 1.55;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 14px;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px rgba(37,99,235,.35);
+      text-decoration: none;
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,.45); text-decoration: none; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      color: var(--text-1);
+      font-size: 17px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      transition: border-color 0.15s, transform 0.15s;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); text-decoration: none; }
+    .hero-disclaimer {
+      font-size: 13px;
+      color: var(--text-2);
+    }
+
+    /* WHAT IS AAC */
+    .what-is {
+      padding: 72px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .section-tag {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      color: var(--text-1);
+      margin-bottom: 20px;
+    }
+    .section-body {
+      font-size: 18px;
+      color: var(--text-2);
+      max-width: 660px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* WHO */
+    .who-section {
+      background: var(--surface);
+      padding: 72px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .who-section .section-title { text-align: center; }
+    .conditions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 40px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .condition-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .condition-icon { font-size: 36px; margin-bottom: 8px; }
+    .condition-name { font-size: 15px; font-weight: 700; color: var(--text-1); }
+    .condition-desc { font-size: 13px; color: var(--text-2); margin-top: 4px; line-height: 1.4; }
+
+    /* FEATURES */
+    .features-section { padding: 80px 24px; max-width: 1000px; margin: 0 auto; }
+    .features-section .section-title { text-align: center; margin-bottom: 48px; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .feature-title { font-size: 18px; font-weight: 800; color: var(--text-1); margin-bottom: 8px; }
+    .feature-desc { font-size: 15px; color: var(--text-2); line-height: 1.55; }
+
+    /* HOW TO INSTALL */
+    .install-section {
+      background: linear-gradient(160deg, #0F172A 0%, #1E3A5F 100%);
+      color: #fff;
+      padding: 80px 24px;
+    }
+    .install-section .section-title { color: #fff; text-align: center; }
+    .install-section .section-tag { color: #60A5FA; }
+    .install-tabs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 32px 0 24px;
+      flex-wrap: wrap;
+    }
+    .install-tab {
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,.2);
+      background: transparent;
+      color: rgba(255,255,255,.7);
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .install-tab.active, .install-tab:hover {
+      background: rgba(255,255,255,.15);
+      border-color: rgba(255,255,255,.5);
+      color: #fff;
+    }
+    .install-steps {
+      max-width: 600px;
+      margin: 0 auto;
+      display: none;
+    }
+    .install-steps.active { display: block; }
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content h4 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+    .step-content p { font-size: 15px; color: rgba(255,255,255,.7); line-height: 1.5; }
+    .step-content code {
+      background: rgba(255,255,255,.12);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #93C5FD;
+    }
+
+    /* FAQ */
+    .faq-section { padding: 80px 24px; max-width: 760px; margin: 0 auto; }
+    .faq-section .section-title { text-align: center; margin-bottom: 40px; }
+    .faq-item {
+      border-bottom: 1.5px solid var(--border);
+      padding: 20px 0;
+    }
+    .faq-q {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-1);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+      line-height: 1.4;
+    }
+    .faq-q::after { content: '+'; font-size: 22px; font-weight: 400; color: var(--text-2); flex-shrink: 0; }
+    .faq-item.open .faq-q::after { content: '−'; }
+    .faq-a {
+      font-size: 16px;
+      color: var(--text-2);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.2s;
+      line-height: 1.65;
+    }
+    .faq-item.open .faq-a { max-height: 400px; padding-top: 12px; }
+
+    /* DOWNLOAD */
+    .download-section {
+      background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+      color: #fff;
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .download-section h2 {
+      font-size: clamp(30px, 6vw, 52px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    .download-section p {
+      font-size: 18px;
+      opacity: 0.85;
+      max-width: 500px;
+      margin: 0 auto 36px;
+    }
+    .download-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.15);
+      border: 2px solid rgba(255,255,255,.4);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+      backdrop-filter: blur(8px);
+    }
+    .dl-btn:hover {
+      background: rgba(255,255,255,.25);
+      border-color: rgba(255,255,255,.7);
+      transform: translateY(-2px);
+      text-decoration: none;
+      color: #fff;
+    }
+    .dl-btn-icon { font-size: 24px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--text-1);
+      color: rgba(255,255,255,.6);
+      padding: 40px 24px;
+      text-align: center;
+    }
+    footer a { color: rgba(255,255,255,.8); }
+    footer a:hover { color: #fff; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+    .footer-links a { font-size: 14px; font-weight: 600; }
+    .footer-disclaimer {
+      font-size: 12px;
+      opacity: 0.5;
+      max-width: 600px;
+      margin: 16px auto 0;
+      line-height: 1.5;
+    }
+  </style>
 </head>
-<body class="view-home">
+<body>
 
-  <!-- ============ HEADER ============ -->
-  <header class="app-header" role="banner">
-    <div class="app-brand">
-      <svg class="brand-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="currentColor" opacity="0.15"/>
-        <path d="M6 10C6 8.895 6.895 8 8 8h16c1.105 0 2 .895 2 2v9c0 1.105-.895 2-2 2H18l-4 3v-3H8c-1.105 0-2-.895-2-2V10z" fill="currentColor"/>
-      </svg>
-      <span class="app-title">TouchTalk</span>
-    </div>
-    <div class="header-actions">
-      <button class="icon-btn" id="searchToggle" aria-label="Search words" title="Search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-      </button>
-      <button class="icon-btn" id="darkModeToggle" aria-label="Toggle dark mode" title="Dark mode">
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none">
-          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-      </button>
-    </div>
-  </header>
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#"><span>💬</span> TouchTalk</a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#install">Install</a>
+    <a href="#faq">FAQ</a>
+    <a href="app.html" class="nav-cta">Open App →</a>
+  </div>
+</nav>
 
-  <!-- ============ SEARCH BAR ============ -->
-  <div class="search-bar-wrap" id="searchBarWrap" aria-hidden="true">
-    <div class="search-bar">
-      <svg class="search-icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input type="search" id="searchInput" class="search-input" placeholder="Search all words and phrases…" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search words">
-      <button class="search-clear-btn" id="searchClearBtn" aria-label="Clear search" tabindex="-1">✕</button>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✨ 100% Free · No Ads · No Data Collected</div>
+  <h1>Give everyone a <em>voice</em> — for free.</h1>
+  <p>TouchTalk is an Augmentative and Alternative Communication (AAC) app that helps people with speech disabilities communicate instantly using symbols, phrases, and text-to-speech.</p>
+  <div class="hero-buttons">
+    <a href="app.html" class="btn-primary">🚀 Open TouchTalk Now</a>
+    <a href="#install" class="btn-secondary">📱 Install on Phone</a>
+  </div>
+  <p class="hero-disclaimer">Works in any browser · No account needed · Free forever</p>
+</section>
+
+<!-- WHAT IS AAC -->
+<section class="what-is">
+  <p class="section-tag">What is AAC?</p>
+  <h2 class="section-title">Communication is a human right</h2>
+  <p class="section-body">
+    Augmentative and Alternative Communication (AAC) tools help people who cannot speak — or have difficulty speaking — to express themselves. TouchTalk replaces expensive dedicated AAC devices with a free app that works on any phone, tablet, or computer. Tap a symbol, build a sentence, press Speak. It's that simple.
+  </p>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="who-section">
+  <p class="section-tag" style="text-align:center">Who it's for</p>
+  <h2 class="section-title">Built for people, not diagnoses</h2>
+  <div class="conditions-grid">
+    <div class="condition-card">
+      <div class="condition-icon">🧠</div>
+      <div class="condition-name">Cerebral Palsy</div>
+      <div class="condition-desc">Large buttons and one-tap speaking for limited motor control</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">⚡</div>
+      <div class="condition-name">ALS / MND</div>
+      <div class="condition-desc">Works with switch access and eye-tracking devices</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">🌈</div>
+      <div class="condition-name">Autism</div>
+      <div class="condition-desc">Predictable layout with customisable word banks</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">🗣️</div>
+      <div class="condition-name">Aphasia</div>
+      <div class="condition-desc">Symbol-first design bypasses language retrieval barriers</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">🤫</div>
+      <div class="condition-name">Selective Mutism</div>
+      <div class="condition-desc">Communicate in stressful situations without speaking</div>
+    </div>
+    <div class="condition-card">
+      <div class="condition-icon">🏥</div>
+      <div class="condition-name">Post-Surgery / Intubation</div>
+      <div class="condition-desc">Temporary communication when speaking is not possible</div>
     </div>
   </div>
+</section>
 
-  <!-- ============ MAIN (scrollable) ============ -->
-  <main class="app-main" id="appMain">
-
-    <!-- ===== HOME / TALK VIEW ===== -->
-    <section class="view view-panel" id="view-home" aria-label="Talk">
-
-      <!-- search results (only shown while searching) -->
-      <div class="search-results-area" id="searchResultsArea" aria-live="polite" aria-label="Search results" style="display:none"></div>
-
-      <div id="talkContent">
-        <!-- category nav tabs -->
-        <nav class="cat-nav" id="catNav" role="navigation" aria-label="Word categories" style="display:none">
-          <div class="cat-nav-scroll"></div>
-        </nav>
-        <!-- symbol / category grid -->
-        <div class="symbol-grid" id="symbolGrid" role="grid" aria-label="Communication symbols"></div>
-      </div>
-    </section>
-
-    <!-- ===== TYPE VIEW (text-based AAC) ===== -->
-    <section class="view view-panel" id="view-type" aria-label="Type to speak" hidden>
-      <div class="view-header">
-        <h1 class="view-title">Type to Speak</h1>
-        <p class="view-sub">Type anything and TouchTalk will say it out loud.</p>
-      </div>
-      <label for="typeArea" class="sr-only">Text to speak</label>
-      <textarea id="typeArea" class="type-area" rows="4" placeholder="Type here…" autocomplete="off" autocorrect="on"></textarea>
-      <div class="predict-row type-predict" id="typePredict" role="group" aria-label="Word suggestions"></div>
-      <div class="type-controls">
-        <button class="type-btn type-clear" onclick="typeClear()" aria-label="Clear typed text">🗑️ Clear</button>
-        <button class="type-btn type-save" onclick="typeSaveAsPhrase()" aria-label="Save as quick phrase">⭐ Save Phrase</button>
-        <button class="type-btn type-speak" onclick="typeSpeak()" aria-label="Speak typed text">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-          </svg>
-          Speak
-        </button>
-      </div>
-    </section>
-
-    <!-- ===== WORD BANKS VIEW ===== -->
-    <section class="view view-panel" id="view-wordbanks" aria-label="Word Banks" hidden>
-      <div class="view-header">
-        <h1 class="view-title">Word Banks</h1>
-        <p class="view-sub">Add and manage your categories, symbols, and phrases.</p>
-      </div>
-      <div class="manage-grid">
-        <button class="manage-card" onclick="openAddCategoryModal()">
-          <span class="manage-emoji" aria-hidden="true">📁</span>
-          <span class="manage-label">Add Category</span>
-          <span class="manage-desc">Create a new group of words</span>
-        </button>
-        <button class="manage-card" onclick="openAddSymbolModal()">
-          <span class="manage-emoji" aria-hidden="true">➕</span>
-          <span class="manage-label">Add Symbol</span>
-          <span class="manage-desc">Add a word to a category</span>
-        </button>
-        <button class="manage-card" onclick="openAddPhraseModal()">
-          <span class="manage-emoji" aria-hidden="true">⭐</span>
-          <span class="manage-label">Add Quick Phrase</span>
-          <span class="manage-desc">Save a full sentence</span>
-        </button>
-        <button class="manage-card" onclick="openDeleteCategoryModal()">
-          <span class="manage-emoji" aria-hidden="true">🗑️</span>
-          <span class="manage-label">Delete Category</span>
-          <span class="manage-desc">Remove a category you made</span>
-        </button>
-        <button class="manage-card" onclick="openDeleteSymbolModal()">
-          <span class="manage-emoji" aria-hidden="true">❌</span>
-          <span class="manage-label">Delete Symbol</span>
-          <span class="manage-desc">Remove individual words</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- ===== HISTORY VIEW ===== -->
-    <section class="view view-panel" id="view-history" aria-label="History" hidden>
-      <div class="view-header">
-        <h1 class="view-title">History</h1>
-        <p class="view-sub">Tap any past sentence to speak it again.</p>
-      </div>
-      <div id="historyList" class="history-list" aria-live="polite"></div>
-    </section>
-
-    <!-- ===== SETTINGS VIEW ===== -->
-    <section class="view view-panel" id="view-settings" aria-label="Settings" hidden>
-      <div class="view-header">
-        <h1 class="view-title">Settings</h1>
-        <p class="view-sub">Customize the voice and appearance.</p>
-      </div>
-
-      <div class="settings-card">
-        <div class="settings-row">
-          <span class="settings-label" id="darkLabel">Dark Mode</span>
-          <button class="toggle-switch" id="darkToggle" role="switch" aria-checked="false" aria-labelledby="darkLabel" onclick="toggleDarkMode()">
-            <span class="toggle-knob"></span>
-          </button>
-        </div>
-      </div>
-
-      <div class="settings-card">
-        <h2 class="settings-card-title">Voice</h2>
-        <div class="settings-field">
-          <label class="settings-label" for="voiceSelect">Voice</label>
-          <select class="settings-select" id="voiceSelect" aria-label="Select voice"></select>
-        </div>
-        <div class="settings-field">
-          <label class="settings-label" for="voiceSpeed">Speed — <span id="speedVal">0.85×</span></label>
-          <input type="range" class="settings-slider" id="voiceSpeed" min="0.5" max="2.0" step="0.05" value="0.85">
-          <div class="slider-ends" aria-hidden="true"><span>Slow</span><span>Fast</span></div>
-        </div>
-        <div class="settings-field">
-          <label class="settings-label" for="voicePitch">Pitch — <span id="pitchVal">1.00×</span></label>
-          <input type="range" class="settings-slider" id="voicePitch" min="0.5" max="2.0" step="0.05" value="1.0">
-          <div class="slider-ends" aria-hidden="true"><span>Low</span><span>High</span></div>
-        </div>
-        <button class="settings-action-btn" onclick="testVoice()">🔊 Test Voice</button>
-      </div>
-
-      <div class="settings-card">
-        <h2 class="settings-card-title">Access</h2>
-        <div class="settings-row">
-          <span class="settings-label" id="speakWordLabel">Speak each word when tapped</span>
-          <button class="toggle-switch" id="speakWordToggle" role="switch" aria-checked="true" aria-labelledby="speakWordLabel" onclick="toggleSpeakEachWord()">
-            <span class="toggle-knob"></span>
-          </button>
-        </div>
-        <div class="settings-field">
-          <label class="settings-label" for="buttonSize">Button size</label>
-          <select class="settings-select" id="buttonSize">
-            <option value="small">Small — more words on screen</option>
-            <option value="medium" selected>Medium (default)</option>
-            <option value="large">Large — easier to tap</option>
-            <option value="xl">Extra Large — limited mobility</option>
-          </select>
-        </div>
-        <div class="settings-field">
-          <label class="settings-label" for="holdDuration">Hold to activate (prevents accidental taps)</label>
-          <select class="settings-select" id="holdDuration">
-            <option value="0" selected>Off — tap normally</option>
-            <option value="300">Short hold (0.3s)</option>
-            <option value="600">Medium hold (0.6s)</option>
-            <option value="1000">Long hold (1s)</option>
-          </select>
-        </div>
-        <div class="settings-field">
-          <label class="settings-label" for="debounceTime">Pause between taps (prevents double taps)</label>
-          <select class="settings-select" id="debounceTime">
-            <option value="0" selected>Off</option>
-            <option value="300">Short (0.3s)</option>
-            <option value="700">Medium (0.7s)</option>
-            <option value="1500">Long (1.5s)</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="settings-card">
-        <h2 class="settings-card-title">Backup</h2>
-        <p class="settings-hint">Save all your words, phrases and settings to a file — restore them on any device.</p>
-        <button class="settings-action-btn" onclick="exportBackup()">💾 Export Backup</button>
-        <button class="settings-action-btn" style="margin-top:10px" onclick="document.getElementById('importFile').click()">📂 Import Backup</button>
-        <input type="file" id="importFile" accept=".json,application/json" style="display:none" aria-label="Import backup file">
-      </div>
-
-      <div class="settings-card">
-        <h2 class="settings-card-title">Install</h2>
-        <p class="settings-hint" id="installHint">Install TouchTalk on this device to use it full-screen and offline, like a normal app.</p>
-        <button class="settings-action-btn" id="installBtn" onclick="installApp()">📲 Install App</button>
-      </div>
-
-      <div class="settings-card settings-info">
-        <p>TouchTalk v2.3 · Free &amp; open · No data collected</p>
-        <a href="landing.html" class="settings-link">About TouchTalk →</a>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ============ SPEAK ACTION BAR (home only) ============ -->
-  <div class="action-bar" id="actionBar" role="region" aria-label="Sentence and speak controls">
-    <div class="predict-row" id="predictRow" role="group" aria-label="Word suggestions"></div>
-    <div class="output-box" id="output" role="log" aria-label="Current sentence" aria-live="polite" tabindex="0">
-      <span class="output-placeholder" id="outputPlaceholder">Tap symbols to build a sentence</span>
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <p class="section-tag" style="text-align:center">Features</p>
+  <h2 class="section-title">Everything you need, nothing you don't</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🔊</span>
+      <h3 class="feature-title">Text-to-Speech</h3>
+      <p class="feature-desc">Tap any symbol and it speaks immediately. Or build a full sentence and speak it all at once. Adjustable speed, pitch, and voice.</p>
     </div>
-    <div class="action-row">
-      <button class="act-btn emergency-btn" onclick="emergency()" aria-label="Emergency — I need help now">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
-        <span class="act-label">Help</span>
-      </button>
-      <button class="act-btn util-btn" onclick="backspaceWord()" aria-label="Delete last word">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/>
-        </svg>
-        <span class="act-label">Back</span>
-      </button>
-      <button class="act-btn util-btn" onclick="clearText()" aria-label="Clear all text">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/>
-        </svg>
-        <span class="act-label">Clear</span>
-      </button>
-      <button class="act-btn speak-btn" onclick="speakText()" aria-label="Speak the sentence aloud">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-        </svg>
-        <span class="act-label">Speak</span>
-      </button>
+    <div class="feature-card">
+      <span class="feature-icon">⭐</span>
+      <h3 class="feature-title">Quick Phrases</h3>
+      <p class="feature-desc">Common sentences like "I need help" or "I want water" are always one tap away. Add your own phrases for personalised communication.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔍</span>
+      <h3 class="feature-title">Caregiver Search</h3>
+      <p class="feature-desc">Caregivers and support workers can type to search all word banks instantly — no need to know the symbol layout.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🆘</span>
+      <h3 class="feature-title">Emergency Button</h3>
+      <p class="feature-desc">One large, always-visible button immediately speaks "Help, I need assistance now" at full volume.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">✏️</span>
+      <h3 class="feature-title">Custom Word Banks</h3>
+      <p class="feature-desc">Add your own categories, symbols, and phrases. Upload photos or use any emoji. Changes are saved offline to your device.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🌙</span>
+      <h3 class="feature-title">Dark Mode</h3>
+      <p class="feature-desc">Easy on the eyes for long sessions. Full dark mode with high-contrast text across the entire app.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📶</span>
+      <h3 class="feature-title">Fully Offline</h3>
+      <p class="feature-desc">Works without internet once installed. No server calls, no tracking, nothing leaves your device.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">♿</span>
+      <h3 class="feature-title">Accessibility First</h3>
+      <p class="feature-desc">WCAG AA contrast, 56dp+ touch targets, screen reader support, and no flashing animations. Built for everyone.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💸</span>
+      <h3 class="feature-title">Free Forever</h3>
+      <p class="feature-desc">No subscription. No in-app purchases. No ads. No account. TouchTalk is free because communication shouldn't have a paywall.</p>
     </div>
   </div>
+</section>
 
-  <!-- ============ BOTTOM NAV (always visible) ============ -->
-  <nav class="bottom-nav" id="bottomNav" role="navigation" aria-label="Main navigation">
-    <button class="nav-tab active" data-view="home" aria-current="page" aria-label="Home — talk">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 9.5L12 3l9 6.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M9 21v-6h6v6"/>
-      </svg>
-      <span class="nav-label">Home</span>
-    </button>
-    <button class="nav-tab" data-view="type" aria-label="Type to speak">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="9" x2="6" y2="9.01"/><line x1="10" y1="9" x2="10" y2="9.01"/><line x1="14" y1="9" x2="14" y2="9.01"/><line x1="18" y1="9" x2="18" y2="9.01"/><line x1="6" y1="13" x2="6" y2="13.01"/><line x1="18" y1="13" x2="18" y2="13.01"/><line x1="8" y1="16" x2="16" y2="16"/>
-      </svg>
-      <span class="nav-label">Type</span>
-    </button>
-    <button class="nav-tab" data-view="wordbanks" aria-label="Word Banks">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
-      </svg>
-      <span class="nav-label">Banks</span>
-    </button>
-    <button class="nav-tab" data-view="history" aria-label="History">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/>
-      </svg>
-      <span class="nav-label">History</span>
-    </button>
-    <button class="nav-tab" data-view="settings" aria-label="Settings">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-      </svg>
-      <span class="nav-label">Settings</span>
-    </button>
-  </nav>
-
-  <!-- ============ MODAL ============ -->
-  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
-    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <header class="modal-header">
-        <h2 class="modal-title" id="modalTitle">Title</h2>
-        <button class="modal-close" id="modalClose" aria-label="Close dialog">✕</button>
-      </header>
-      <div class="modal-body" id="modalBody"></div>
-      <footer class="modal-footer" id="modalFooter"></footer>
-    </div>
+<!-- HOW TO INSTALL -->
+<section class="install-section" id="install">
+  <p class="section-tag" style="text-align:center">Installation</p>
+  <h2 class="section-title" style="color:#fff">Install on your device</h2>
+  <div class="install-tabs">
+    <button class="install-tab active" onclick="showInstall('web', this)">🌐 Web (Any Device)</button>
+    <button class="install-tab" onclick="showInstall('ios', this)">🍎 iPhone / iPad</button>
+    <button class="install-tab" onclick="showInstall('android', this)">🤖 Android</button>
   </div>
 
-  <script src="script.js"></script>
+  <div class="install-steps active" id="install-web">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Open TouchTalk</h4><p>Visit this page on any device and tap <strong>Open TouchTalk Now</strong> above.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Use it immediately</h4><p>No download or account needed. The app works instantly in your browser.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Bookmark for quick access</h4><p>Bookmark the app page in your browser so you can return to it quickly.</p></div></div>
+  </div>
+
+  <div class="install-steps" id="install-ios">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Open in Safari</h4><p>Open TouchTalk in <strong>Safari</strong> on your iPhone or iPad (not Chrome).</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Tap the Share button</h4><p>Tap the <strong>□↑</strong> Share icon at the bottom of the screen.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Add to Home Screen</h4><p>Scroll down and tap <strong>"Add to Home Screen"</strong>. Tap <strong>Add</strong>.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Done!</h4><p>TouchTalk appears on your home screen like any other app and works fully offline.</p></div></div>
+  </div>
+
+  <div class="install-steps" id="install-android">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Open in Chrome</h4><p>Open TouchTalk in <strong>Google Chrome</strong> on your Android phone or tablet.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Tap the menu</h4><p>Tap the <strong>⋮</strong> three-dot menu in the top-right corner of Chrome.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Add to Home screen</h4><p>Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong> and confirm.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Done!</h4><p>TouchTalk is now installed on your Android device and works without internet.</p></div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <p class="section-tag" style="text-align:center">FAQ</p>
+  <h2 class="section-title">Common questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Does TouchTalk collect any data about me or the user?</div>
+    <div class="faq-a">No. TouchTalk collects absolutely zero data. There are no analytics, no tracking pixels, no server calls. Everything — your word banks, settings, and custom phrases — is stored only on your device using the browser's local storage. Nothing ever leaves the device.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Does it work without internet?</div>
+    <div class="faq-a">Yes. Once you've visited the app once, it installs a service worker that caches the entire app. After that, TouchTalk works completely offline — including text-to-speech, which uses your device's built-in speech engine, not the internet.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">What languages are supported?</div>
+    <div class="faq-a">Text-to-speech supports every language your device supports (typically 30–60 languages on iOS and Android). The app interface is currently in English. You can add words and phrases in any language — the TTS engine will attempt to speak them correctly.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Is this a medical device?</div>
+    <div class="faq-a">No. TouchTalk is a communication aid, not a medical device. It has not been certified by the FDA, CE, or any other regulatory body. It is not a replacement for professional AAC assessment or therapy. For complex communication needs, please consult a speech-language pathologist.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Can I add my own words and pictures?</div>
+    <div class="faq-a">Yes. Open the app, go to Customize, and you can add new categories, symbols with custom photos or emojis, and quick phrases. Everything is saved to your device and persists between sessions.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Does it work with switch access or eye-tracking?</div>
+    <div class="faq-a">TouchTalk is designed with accessibility in mind. All interactive elements are keyboard-focusable, which makes it compatible with most switch access systems. Full eye-tracking support is on the roadmap for a future version.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Why is it free?</div>
+    <div class="faq-a">Communication is a human right. Dedicated AAC devices can cost thousands of dollars, putting them out of reach for many families. TouchTalk exists to change that. It is maintained as a free, open project with no commercial interests.</div>
+  </div>
+</section>
+
+<!-- DOWNLOAD CTA -->
+<section class="download-section" id="download">
+  <h2>Ready to start communicating?</h2>
+  <p>Open TouchTalk right now — no download, no account, no cost.</p>
+  <div class="download-buttons">
+    <a href="app.html" class="dl-btn"><span class="dl-btn-icon">🚀</span> Open the App</a>
+    <a href="#install" class="dl-btn"><span class="dl-btn-icon">📱</span> Install to Home Screen</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="app.html">Open App</a>
+    <a href="#features">Features</a>
+    <a href="#faq">FAQ</a>
+    <a href="mailto:abza2030@gmail.com">Contact</a>
+    <a href="review.html">Leave a Review</a>
+  </div>
+  <p style="font-size:14px; margin-bottom:8px">Made with ❤️ for the AAC community</p>
+  <p class="footer-disclaimer">
+    ⚠️ Not a medical device. TouchTalk is a free communication support tool, not a substitute for professional medical advice, diagnosis, or treatment. For clinical AAC needs, consult a qualified speech-language pathologist.
+  </p>
+</footer>
+
+<script>
+  function showInstall(id, tab) {
+    document.querySelectorAll('.install-steps').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.install-tab').forEach(el => el.classList.remove('active'));
+    document.getElementById('install-' + id).classList.add('active');
+    tab.classList.add('active');
+  }
+  function toggleFaq(el) {
+    el.closest('.faq-item').classList.toggle('open');
+  }
+</script>
 </body>
 </html>
+
